@@ -1,0 +1,14 @@
+spring:
+  application:
+    name:
+      dashboard-oficina-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dashboard-oficina
+    username: root
+    password: password
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  jpa:
+    hibernate:
+      ddl-auto: update
