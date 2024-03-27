@@ -24,4 +24,7 @@ public class Telefone {
   @Column(name = "numero", length = 9, unique = true)
   private String numero;
 
+  @OneToOne(mappedBy = "telefone", cascade = CascadeType.ALL)
+  private Cliente cliente;
+
 }
