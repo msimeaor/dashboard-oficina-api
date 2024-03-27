@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -43,7 +44,9 @@ public class Cliente {
   @OneToOne
   private Telefone telefone;
 
-  // TODO Criar relacionamento com classe Venda
+  @OneToMany(mappedBy = "cliente")
+  private List<Venda> vendas;
+
   // TODO Criar relacionamento com classe Veiculo
 
 }

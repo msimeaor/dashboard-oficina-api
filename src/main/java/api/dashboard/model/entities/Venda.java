@@ -35,7 +35,9 @@ public class Venda {
   @Column(name = "data")
   private LocalDate data;
 
-  // TODO Criar relacionamento com classe Cliente
+  @ManyToOne
+  private Cliente cliente;
+
   // TODO Criar relacionamento com classe Anotacao
   // TODO Criar relacionamento com classe Servico
 
