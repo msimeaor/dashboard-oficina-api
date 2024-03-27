@@ -39,5 +39,6 @@ public class Veiculo {
   private String litragemMotor;
 
   // TODO Criar relacionamento com classe Anotacao
+  // TODO Criar relacionamento com classe Cliente
 
 }

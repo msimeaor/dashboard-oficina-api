@@ -40,6 +40,8 @@ public class Cliente {
   @Column(name = "email", length = 100, unique = true)
   private String email;
 
-  // TODO criar relacionamento com Telefone
+  // TODO criar relacionamento com classe Telefone
+  // TODO Criar relacionamento com classe Venda
+  // TODO Criar relacionamento com classe Veiculo
 
 }
