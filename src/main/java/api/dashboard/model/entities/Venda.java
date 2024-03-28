@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -41,6 +42,10 @@ public class Venda {
   @OneToOne
   private Anotacao anotacao;
 
-  // TODO Criar relacionamento com classe Servico
-
+  @ManyToMany
+  @JoinTable(name = "venda_servico",
+          joinColumns = @JoinColumn(name = "venda_id"),
+          inverseJoinColumns = @JoinColumn(name = "servico_id")
+  )
+  private Set<Servico> servicos;
 }

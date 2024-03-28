@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +27,6 @@ public class Servico {
   @Column(name = "valor_unitario", precision = 7, scale = 2)
   private BigDecimal valorUnitario;
 
-  // TODO Criar relacionamento com classe Venda
-
+  @ManyToMany(mappedBy = "servicos")
+  private Set<Venda> vendas;
 }
