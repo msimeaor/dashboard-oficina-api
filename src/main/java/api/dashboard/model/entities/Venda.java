@@ -38,7 +38,9 @@ public class Venda {
   @ManyToOne
   private Cliente cliente;
 
-  // TODO Criar relacionamento com classe Anotacao
+  @OneToOne
+  private Anotacao anotacao;
+
   // TODO Criar relacionamento com classe Servico
 
 }

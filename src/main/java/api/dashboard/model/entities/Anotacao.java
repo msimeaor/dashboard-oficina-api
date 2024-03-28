@@ -27,6 +27,6 @@ public class Anotacao {
   @OneToOne(mappedBy = "anotacao", cascade = CascadeType.ALL)
   private Veiculo veiculo;
 
-  // TODO Criar relacionamento com classe Venda
-
+  @OneToOne(mappedBy = "anotacao", cascade = CascadeType.ALL)
+  private Venda venda;
 }
