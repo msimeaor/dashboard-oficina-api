@@ -24,7 +24,9 @@ public class Anotacao {
   @Column(name = "descricao")
   private String descricao;
 
-  // TODO Criar relacionamento com classe Veiculo
+  @OneToOne(mappedBy = "anotacao", cascade = CascadeType.ALL)
+  private Veiculo veiculo;
+
   // TODO Criar relacionamento com classe Venda
 
 }

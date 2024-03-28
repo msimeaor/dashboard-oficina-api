@@ -43,6 +43,7 @@ public class Veiculo {
   @ManyToMany(mappedBy = "veiculos")
   private Set<Cliente> clientes;
 
-  // TODO Criar relacionamento com classe Anotacao
+  @OneToOne
+  private Anotacao anotacao;
 
 }
