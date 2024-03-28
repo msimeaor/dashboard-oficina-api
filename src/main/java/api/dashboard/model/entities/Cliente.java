@@ -46,7 +46,7 @@ public class Cliente {
   private Telefone telefone;
 
   @OneToMany(mappedBy = "cliente")
-  private List<Venda> vendas;
+  private Set<Venda> vendas;
 
   @ManyToMany
   @JoinTable(name = "cliente_veiculo",
