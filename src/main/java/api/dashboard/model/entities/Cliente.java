@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -47,6 +48,10 @@ public class Cliente {
   @OneToMany(mappedBy = "cliente")
   private List<Venda> vendas;
 
-  // TODO Criar relacionamento com classe Veiculo
-
+  @ManyToMany
+  @JoinTable(name = "cliente_veiculo",
+          joinColumns = @JoinColumn(name = "cliente_id"),
+          inverseJoinColumns = @JoinColumn(name = "veiculo_id")
+  )
+  private Set<Veiculo> veiculos;
 }

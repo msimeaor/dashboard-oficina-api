@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,7 +40,9 @@ public class Veiculo {
   @Column(name = "litragem_motor", length = 3)
   private String litragemMotor;
 
+  @ManyToMany(mappedBy = "veiculos")
+  private Set<Cliente> clientes;
+
   // TODO Criar relacionamento com classe Anotacao
-  // TODO Criar relacionamento com classe Cliente
 
 }
