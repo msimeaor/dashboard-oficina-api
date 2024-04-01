@@ -1,5 +1,6 @@
 package api.dashboard.controllers;
 
+import api.dashboard.model.services.impl.VeiculoServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,6 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/veiculos")
 public class VeiculoRestController {
 
-  public VeiculoRestController() {}
+  private VeiculoServiceImpl service;
+
+  public VeiculoRestController(VeiculoServiceImpl service) {
+    this.service = service;
+  }
 
 }
