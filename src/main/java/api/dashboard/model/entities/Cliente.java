@@ -42,6 +42,9 @@ public class Cliente {
   @Column(name = "email", length = 100, unique = true)
   private String email;
 
+  @Column(name = "data_criacao")
+  private LocalDate dataCriacao;
+
   @OneToOne
   private Telefone telefone;
 
