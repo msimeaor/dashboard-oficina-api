@@ -33,8 +33,8 @@ public class Venda {
   @Column(name = "quantidade_parcelas")
   private int qtdParcelas;
 
-  @Column(name = "data")
-  private LocalDate data;
+  @Column(name = "data_criacao")
+  private LocalDate dataCriacao;
 
   @ManyToOne
   private Cliente cliente;
