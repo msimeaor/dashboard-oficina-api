@@ -15,8 +15,8 @@ public class ClienteServiceImpl implements ClienteService {
     this.repository = repository;
   }
 
-  public ResponseEntity<EstatisticasDTO> getEstatisticasClientes(Integer mes) {
-    
+  public ResponseEntity<EstatisticasDTO> getEstatisticasClientes() {
+    return null;
   }
 
 }

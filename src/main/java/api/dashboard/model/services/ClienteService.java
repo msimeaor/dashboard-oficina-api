@@ -5,6 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface ClienteService {
 
-  ResponseEntity<EstatisticasDTO> getEstatisticasClientes(Integer mes);
+  ResponseEntity<EstatisticasDTO> getEstatisticasClientes();
 
 }
