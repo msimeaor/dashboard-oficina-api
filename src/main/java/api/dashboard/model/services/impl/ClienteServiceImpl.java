@@ -21,12 +21,8 @@ public class ClienteServiceImpl implements ClienteService {
     Integer totalClientes = acessoDadosCliente.getTotalRegistrosCadastrados();
     Double porcentagemCrescimentoClientesUltimoMes = new Calculos(acessoDadosCliente)
             .calcPorcentagemCrescimentoRegistrosCadastradosUltimos30DiasEmRelacaoMesAnterior();
-
-    EstatisticasDTO estatisticasDTO = EstatisticasDTO.builder()
-            .nomeEntidade("Clientes")
-            .total(totalClientes)
-            .crescimento(porcentagemCrescimentoClientesUltimoMes)
-            .build();
+    EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
+            "Clientes", totalClientes, porcentagemCrescimentoClientesUltimoMes);
 
     return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
   }

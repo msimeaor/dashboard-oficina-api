@@ -15,4 +15,12 @@ public class EstatisticasDTO {
   private Integer total;
   private Double crescimento;
 
+  public static EstatisticasDTO newEstatisticasDTO(String nomeEntidade, Integer total, Double crescimento) {
+    return EstatisticasDTO.builder()
+            .nomeEntidade(nomeEntidade)
+            .total(total)
+            .crescimento(crescimento)
+            .build();
+  }
+
 }
