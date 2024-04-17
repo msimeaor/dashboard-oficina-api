@@ -40,7 +40,7 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
             .build();
 
     var content = given().spec(specification)
-            .basePath("/api/clientes/buscas/totalClientes")
+            .basePath("/api/clientes/buscas/getEstatisticasClientes")
             .when()
               .get()
             .then()

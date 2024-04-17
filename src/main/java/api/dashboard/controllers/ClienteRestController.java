@@ -17,7 +17,7 @@ public class ClienteRestController {
     this.service = service;
   }
 
-  @GetMapping("/buscas/totalClientes")
+  @GetMapping("/buscas/getEstatisticasClientes")
   public ResponseEntity<EstatisticasDTO> getEstatisticasClientes() {
 
     return service.getEstatisticasClientes();
