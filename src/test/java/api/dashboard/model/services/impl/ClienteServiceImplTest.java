@@ -58,7 +58,7 @@ class ClienteServiceImplTest {
       service.getEstatisticasClientes();
     } catch (Exception ex) {
       assertEquals(ZeroRegistrosEncontradosException.class, ex.getClass());
-      assertEquals("Não há registros cadastrados no penúltimo mês!", ex.getMessage());
+      assertEquals("Dados insuficientes!", ex.getMessage());
     }
   }
 

@@ -23,7 +23,7 @@ public class Calculos implements CalculosInterface {
 
   private void validarRegistrosCadastradosPenultimoMes(Integer registrosCadastradosPenultimoMes) {
     if (registrosCadastradosPenultimoMes == 0)
-      throw new ZeroRegistrosEncontradosException("Não há registros cadastrados no penúltimo mês!");
+      throw new ZeroRegistrosEncontradosException("Dados insuficientes!");
   }
 
 }
