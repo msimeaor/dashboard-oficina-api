@@ -1,0 +1,13 @@
+server:
+  port: 8888
+spring:
+  application:
+    name:
+      dashboard-oficina-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  jpa:
+    hibernate:
+      ddl-auto: none
