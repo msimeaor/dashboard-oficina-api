@@ -20,7 +20,7 @@ public class ClienteServiceImpl implements ClienteService {
   public ResponseEntity<EstatisticasDTO> getEstatisticasClientes() {
     Integer totalClientes = acessoDadosCliente.getTotalRegistrosCadastrados();
     Double porcentagemCrescimentoClientesUltimoMes = new Calculos(acessoDadosCliente)
-            .calcPorcentagemCrescimentoRegistrosCadastradosUltimos30DiasEmRelacaoMesAnterior();
+            .calcularCrescimentoUltimoMesEmRelacaoAoTotal();
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Clientes", totalClientes, porcentagemCrescimentoClientesUltimoMes);
 

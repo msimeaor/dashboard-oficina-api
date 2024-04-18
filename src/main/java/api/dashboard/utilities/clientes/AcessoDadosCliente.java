@@ -18,14 +18,8 @@ public class AcessoDadosCliente implements AcessoDados {
     this.geracaoDatas = geracaoDatas;
   }
 
-  public Integer getRegistrosCadastradosUltimos30Dias() {
+  public Integer getRegistrosCadastradosUltimoMes() {
     return repository.countClienteLast30DaysByDataCriacao(geracaoDatas.getUmMesAtras());
-  }
-
-  public Integer getRegistrosCadastradosEntreUltimos30E60Dias() {
-    return repository.countClienteBetween2DatesByDataCriacao(
-            geracaoDatas.getDoisMesesAtras(),
-            geracaoDatas.getUmMesAtras());
   }
 
   public Integer getTotalRegistrosCadastrados() {
