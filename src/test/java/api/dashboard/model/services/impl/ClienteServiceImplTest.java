@@ -34,32 +34,15 @@ class ClienteServiceImplTest {
   @Test
   void whenGetEstatisticasClientesThenReturnSuccess() {
     when(acessoDadosCliente.getTotalRegistrosCadastrados()).thenReturn(100);
-    when(acessoDadosCliente.getRegistrosCadastradosUltimos30Dias()).thenReturn(15);
-    when(acessoDadosCliente.getRegistrosCadastradosEntreUltimos30E60Dias()).thenReturn(10);
-
+    when(acessoDadosCliente.getRegistrosCadastradosUltimoMes()).thenReturn(20);
     var content = service.getEstatisticasClientes();
 
     assertEquals(HttpStatus.OK, content.getStatusCode());
     assertEquals(EstatisticasDTO.class, content.getBody().getClass());
     assertEquals("Clientes", content.getBody().getNomeEntidade());
     assertEquals(100, content.getBody().getTotal());
-    assertEquals(50.0d, content.getBody().getCrescimento());
-  }
-
-  @Test
-  void whenGetEstatisticasClientesThenReturnZeroRegistrosEncontradosException() {
-    when(acessoDadosCliente.getTotalRegistrosCadastrados()).thenReturn(100);
-    when(acessoDadosCliente.getRegistrosCadastradosUltimos30Dias()).thenReturn(15);
-    // O método lança a exception quando não houverem clientes cadastrados no mês retrasado a partir da data atual.
-    // Por que a divisão no calculo é feita por 0.
-    when(acessoDadosCliente.getRegistrosCadastradosEntreUltimos30E60Dias()).thenReturn(0);
-
-    try {
-      service.getEstatisticasClientes();
-    } catch (Exception ex) {
-      assertEquals(ZeroRegistrosEncontradosException.class, ex.getClass());
-      assertEquals("Dados insuficientes!", ex.getMessage());
-    }
+    // O calculo do crescimento é: (registrosCadastradosUltimoMes * 100) / totalRegistros
+    assertEquals(20.0d, content.getBody().getCrescimento());
   }
 
   public void startEntities() {}
