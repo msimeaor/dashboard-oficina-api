@@ -1,6 +1,7 @@
-package api.dashboard.model.services.impl;
+package api.dashboard.unittests.services;
 
 import api.dashboard.model.dtos.response.EstatisticasDTO;
+import api.dashboard.model.services.impl.ClienteServiceImpl;
 import api.dashboard.utilities.clientes.AcessoDadosCliente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
