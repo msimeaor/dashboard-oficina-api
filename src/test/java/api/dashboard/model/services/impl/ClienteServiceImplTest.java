@@ -1,6 +1,5 @@
 package api.dashboard.model.services.impl;
 
-import api.dashboard.exceptions.ZeroRegistrosEncontradosException;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.utilities.clientes.AcessoDadosCliente;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
