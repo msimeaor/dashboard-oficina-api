@@ -4,5 +4,6 @@ public interface AcessoDados {
 
   Integer getRegistrosCadastradosUltimoMes();
   Integer getTotalRegistrosCadastrados();
+  Integer getRegistrosCadastradosMesEspecifico(Integer valorMes);
 
 }

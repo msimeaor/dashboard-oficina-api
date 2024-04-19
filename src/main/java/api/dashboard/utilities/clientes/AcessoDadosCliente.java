@@ -5,25 +5,30 @@ import api.dashboard.utilities.GeracaoDatas;
 import api.dashboard.utilities.interfaces.searches.AcessoDados;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class AcessoDadosCliente implements AcessoDados {
 
   private ClienteRepository repository;
-  private GeracaoDatas geracaoDatas;
 
-  public AcessoDadosCliente(ClienteRepository repository,
-                            GeracaoDatas geracaoDatas) {
-
+  public AcessoDadosCliente(ClienteRepository repository) {
     this.repository = repository;
-    this.geracaoDatas = geracaoDatas;
   }
 
   public Integer getRegistrosCadastradosUltimoMes() {
-    return repository.countClienteLast30DaysByDataCriacao(geracaoDatas.getUmMesAtras());
+    return repository.countClienteLast30DaysByDataCriacao(GeracaoDatas.getUmMesAtras());
   }
 
   public Integer getTotalRegistrosCadastrados() {
     return repository.countTotalClientesByDataCriacao();
+  }
+
+  public Integer getRegistrosCadastradosMesEspecifico(Integer valorMes) {
+    LocalDate primeiroDiaDoMes = GeracaoDatas.getDataPersonalizada(GeracaoDatas.getAnoAtual(), valorMes, 01);
+    LocalDate ultimoDiaDoMes = GeracaoDatas.getUltimoDiaMes(primeiroDiaDoMes);
+
+    return repository.countClienteBetween2Dates(primeiroDiaDoMes, ultimoDiaDoMes);
   }
 
 }

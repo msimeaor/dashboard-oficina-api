@@ -15,12 +15,12 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
           "WHERE c.dataCriacao >= :umMesAtras")
   Integer countClienteLast30DaysByDataCriacao(@PathParam("umMesAtras") LocalDate umMesAtras);
 
-  @Query("SELECT COUNT(c) FROM Cliente c " +
-          "WHERE c.dataCriacao >= :doisMesesAtras " +
-          "AND c.dataCriacao <= :umMesAtras")
-  Integer countClienteBetween2DatesByDataCriacao(@PathParam("umMesAtras") LocalDate doisMesesAtras,
-                                                 @PathParam("doisMesesAtras") LocalDate umMesAtras);
-
   @Query("SELECT COUNT(*) FROM Cliente")
   Integer countTotalClientesByDataCriacao();
+
+  @Query("SELECT COUNT(c) FROM Cliente c " +
+          "WHERE c.dataCriacao >= :dataInicial " +
+          "AND c.dataCriacao <= :dataFinal")
+  Integer countClienteBetween2Dates(@PathParam("dataInicio") LocalDate dataInicial,
+                                    @PathParam("dataFinal") LocalDate dataFinal);
 }
