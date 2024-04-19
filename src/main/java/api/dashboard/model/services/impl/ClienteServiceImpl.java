@@ -27,4 +27,14 @@ public class ClienteServiceImpl implements ClienteService {
     return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
   }
 
+  public ResponseEntity<EstatisticasDTO> getEstatisticasClientesByMes(Integer valorMes) {
+    Integer totalClientes = acessoDadosCliente.getRegistrosCadastradosMesEspecifico(valorMes);
+    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = new Calculos(acessoDadosCliente)
+            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(valorMes);
+    EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
+            "Clientes", totalClientes, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
+
+    return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
+  }
+
 }
