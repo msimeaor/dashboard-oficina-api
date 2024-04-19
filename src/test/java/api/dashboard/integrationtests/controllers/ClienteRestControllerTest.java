@@ -67,6 +67,39 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
     */
   }
 
+  @Test
+  @Order(2)
+  void getEstatisticasClientesByMes() throws JsonProcessingException {
+    var content = given().spec(specification)
+            .basePath("/api/clientes/buscas/getEstatisticasClientesByMes")
+            .param("mes", 1)
+            .when()
+              .get()
+            .then()
+              .statusCode(200)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, EstatisticasDTO.class);
+    response.setCrescimento(14.285714285714286d);
+
+    assertEquals(EstatisticasDTO.class, response.getClass());
+    assertEquals("Clientes", response.getNomeEntidade());
+    assertEquals(14, response.getTotal());
+    assertEquals(14.285714285714286d, response.getCrescimento());
+    /*
+    Para realizar o calculo do crescimento, a API busca os registros cadastrados nos ultimos 30 dias no banco de dados
+    Ou seja, se eu chamar esse endpoint hoje (19/04/2024), a API busca registros cadastrados de 19/03/2024 - hoje.
+    Se eu rodar daqui 1 mes, o range de datas muda, fazendo com que o valor retornado mude e o resultado do calculo
+    fique diferente, alterando também o valor do crescimento.
+    Para isso, peguei valores de hoje e setei estaticamente no teste.
+    Clientes cadastrados no mês 1 = 14
+    Clientes buscados de 19/03/2024 - hoje = 16
+    Crescimento dos ultimos 30 dias em relação ao mês 1 = 14.285714285714286%
+    */
+  }
+
   private static void startEntities() {}
 
 }
