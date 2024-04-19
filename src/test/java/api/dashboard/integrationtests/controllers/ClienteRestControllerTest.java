@@ -1,6 +1,7 @@
 package api.dashboard.integrationtests.controllers;
 
 import api.dashboard.configs.TestConfigs;
+import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.integrationtests.testcontainers.AbstractIntegrationTests;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,6 +11,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static io.restassured.RestAssured.given;
@@ -97,6 +99,33 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
     Clientes cadastrados no mês 1 = 14
     Clientes buscados de 19/03/2024 - hoje = 16
     Crescimento dos ultimos 30 dias em relação ao mês 1 = 14.285714285714286%
+    */
+  }
+
+  @Test
+  @Order(3)
+  void getEstatisticasClientesByMesThrownZeroCountException() throws JsonProcessingException {
+    var content = given().spec(specification)
+            .basePath("/api/clientes/buscas/getEstatisticasClientesByMes")
+            .param("mes", 5)
+            .when()
+              .get()
+            .then()
+              .statusCode(404)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, ExceptionResponse.class);
+
+    assertEquals(ExceptionResponse.class, response.getClass());
+    assertEquals(HttpStatus.NOT_FOUND.value(), response.getCodigoHttpErro());
+    assertEquals("Dados insuficientes!", response.getMensagemErro());
+    assertEquals("uri=/api/clientes/buscas/getEstatisticasClientesByMes", response.getDetalhesErro());
+    /*
+    A exception foi lançada por que o mês selecionado não possui nenhum registro cadastrado, ou seja. Quando o calculo
+    do crescimento for feito, uma divisão por esse valor é realizada. Se ele for igual a 0, dá erro de divisão por 0.
+    Para o usuário não dar de cara com o erro de calculo, a exception informando que não há dados suficientes é lançada.
     */
   }
 
