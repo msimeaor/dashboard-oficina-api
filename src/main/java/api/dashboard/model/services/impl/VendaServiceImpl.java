@@ -1,16 +1,30 @@
 package api.dashboard.model.services.impl;
 
-import api.dashboard.model.repositories.VendaRepository;
+import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.VendaService;
+import api.dashboard.utilities.Calculos;
+import api.dashboard.utilities.searches.AcessoDadosVendas;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VendaServiceImpl implements VendaService {
 
-  private VendaRepository repository;
+  private AcessoDadosVendas acessoDadosVendas;
 
-  public VendaServiceImpl(VendaRepository repository) {
-    this.repository = repository;
+  public VendaServiceImpl(AcessoDadosVendas acessoDadosVendas) {
+    this.acessoDadosVendas = acessoDadosVendas;
+  }
+
+  public ResponseEntity<EstatisticasDTO> getEstatisticasVendas() {
+    Integer totalVendas = acessoDadosVendas.getTotalRegistrosCadastrados();
+    Double porcentagemCrescimentoVendasUltimoMes = new Calculos(acessoDadosVendas)
+            .calcularCrescimentoUltimoMesEmRelacaoAoTotal();
+    EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
+            "Vendas", totalVendas, porcentagemCrescimentoVendasUltimoMes);
+
+    return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
   }
 
 }
