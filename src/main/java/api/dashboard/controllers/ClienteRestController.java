@@ -1,5 +1,6 @@
 package api.dashboard.controllers;
 
+import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.impl.ClienteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,11 +27,11 @@ public class ClienteRestController {
   }
 
   @Operation(summary = "Coletar estatisticas de clientes",
-    description = "Coletar total de clientes cadastrados no sistema e a porcentagem de crescimento dos clientes" +
+    description = "Coletar total de clientes cadastrados no sistema e a porcentagem de crescimento dos clientes " +
                   "cadastrados no ultimo mês em relação ao total cadastrado no sistema.",
     tags = {"Busca"},
     responses = {
-      @ApiResponse(description = "Success", responseCode = "200",
+      @ApiResponse(description = "Sucesso", responseCode = "200",
         content = {
           @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -50,6 +51,33 @@ public class ClienteRestController {
     return service.getEstatisticasClientes();
   }
 
+  @Operation(summary = "Coletar estatisticas dos clientes por mês",
+    description = "Coletar total de clientes cadastrados no sistema filtrando por um mês e a porcentagem " +
+                  "de crescimento dos clientes cadastrados no ultimo mês em relação ao total cadastrado no mês selecionado.",
+    tags = {"Busca"},
+    responses = {
+      @ApiResponse(description = "Sucesso", responseCode = "200",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = EstatisticasDTO.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "Zero clientes cadastrados no mês selecionado", responseCode = "404",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = ExceptionResponse.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+      @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+      @ApiResponse(description = "Forbiden", responseCode = "403", content = @Content),
+      @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+    }
+  )
   @GetMapping("/buscas/getEstatisticasClientesByMes")
   public ResponseEntity<EstatisticasDTO> getEstatisticasClientesByMes(
           @RequestParam(name = "mes", defaultValue = "1") Integer mes
