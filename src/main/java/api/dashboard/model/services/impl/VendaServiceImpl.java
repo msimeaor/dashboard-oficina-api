@@ -17,12 +17,24 @@ public class VendaServiceImpl implements VendaService {
     this.acessoDadosVendas = acessoDadosVendas;
   }
 
+  @Override
   public ResponseEntity<EstatisticasDTO> getEstatisticasVendas() {
     Integer totalVendas = acessoDadosVendas.getTotalRegistrosCadastrados();
     Double porcentagemCrescimentoVendasUltimoMes = new Calculos(acessoDadosVendas)
             .calcularCrescimentoUltimoMesEmRelacaoAoTotal();
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Vendas", totalVendas, porcentagemCrescimentoVendasUltimoMes);
+
+    return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<EstatisticasDTO> getEstatisticasVendasByMes(Integer valorMes) {
+    Integer totalVendas = acessoDadosVendas.getRegistrosCadastradosMesEspecifico(valorMes);
+    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = new Calculos(acessoDadosVendas)
+            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(valorMes);
+    EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
+            "Vendas", totalVendas, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
 
     return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
   }

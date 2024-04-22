@@ -18,4 +18,10 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
   @Query("SELECT COUNT(*) FROM Venda")
   Integer countTotalVendasByDataCriacao();
 
+  @Query("SELECT COUNT(v) FROM Venda v " +
+          "WHERE v.dataCriacao >= :dataInicial " +
+          "AND v.dataCriacao <= :dataFinal")
+  Integer countVendaBetween2Dates(@PathParam("dataInicial") LocalDate dataInicial,
+                                  @PathParam("dataFinal") LocalDate dataFinal);
+
 }
