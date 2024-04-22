@@ -1,4 +1,4 @@
-package api.dashboard.utilities.clientes;
+package api.dashboard.utilities.searches;
 
 import api.dashboard.model.repositories.ClienteRepository;
 import api.dashboard.utilities.GeracaoDatas;
