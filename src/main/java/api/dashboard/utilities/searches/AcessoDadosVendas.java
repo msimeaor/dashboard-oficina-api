@@ -5,6 +5,8 @@ import api.dashboard.utilities.GeracaoDatas;
 import api.dashboard.utilities.interfaces.searches.AcessoDados;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class AcessoDadosVendas implements AcessoDados {
 
@@ -26,6 +28,9 @@ public class AcessoDadosVendas implements AcessoDados {
 
   @Override
   public Integer getRegistrosCadastradosMesEspecifico(Integer valorMes) {
-    return null;
+    LocalDate primeiroDiaDoMes = GeracaoDatas.getDataPersonalizada(GeracaoDatas.getAnoAtual(), valorMes, 01);
+    LocalDate ultimoDiaDoMes = GeracaoDatas.getUltimoDiaMes(primeiroDiaDoMes);
+
+    return repository.countVendaBetween2Dates(primeiroDiaDoMes, ultimoDiaDoMes);
   }
 }

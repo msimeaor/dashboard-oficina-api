@@ -12,6 +12,7 @@ public class Calculos implements CalculosInterface {
     this.acessoDados = acessoDados;
   }
 
+  @Override
   public Double calcularCrescimentoUltimoMesEmRelacaoAoTotal() {
     Integer registrosCadastradosTotal = acessoDados.getTotalRegistrosCadastrados();
     Integer registrosCadastradosUltimoMes = acessoDados.getRegistrosCadastradosUltimoMes();
@@ -19,6 +20,7 @@ public class Calculos implements CalculosInterface {
     return (double) (registrosCadastradosUltimoMes * 100) / registrosCadastradosTotal;
   }
 
+  @Override
   public Double calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(Integer valorMes) {
     Integer registrosCadastradosUltimoMes = acessoDados.getRegistrosCadastradosUltimoMes();
     Integer registrosCadastradosMesSelecionado = acessoDados.getRegistrosCadastradosMesEspecifico(valorMes);
