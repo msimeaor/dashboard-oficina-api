@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -39,6 +40,9 @@ public class Veiculo {
 
   @Column(name = "litragem_motor", length = 3)
   private String litragemMotor;
+
+  @Column(name = "data_criacao")
+  private LocalDate dataCriacao;
 
   @ManyToMany(mappedBy = "veiculos")
   private Set<Cliente> clientes;
