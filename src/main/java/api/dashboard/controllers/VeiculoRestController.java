@@ -1,5 +1,6 @@
 package api.dashboard.controllers;
 
+import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.impl.VeiculoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,33 @@ public class VeiculoRestController {
     return service.getEstatisticasVeiculos();
   }
 
+  @Operation(summary = "Coletar estatisticas dos veículos por mês",
+    description = "Coletar total de veículos cadastradas no sistema filtrando por um mês e a porcentagem " +
+            "de crescimento das veículos cadastradas no ultimo mês em relação ao total cadastrada no mês selecionado.",
+    tags = {"Busca"},
+    responses = {
+      @ApiResponse(description = "Sucesso", responseCode = "200",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = EstatisticasDTO.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "Zero veículos cadastrados no mês selecionado", responseCode = "404",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = ExceptionResponse.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+      @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+      @ApiResponse(description = "Forbiden", responseCode = "403", content = @Content),
+      @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+    }
+  )
   @GetMapping("/buscas/getEstatisticasVeiculosByMes")
   public ResponseEntity<EstatisticasDTO> getEstatisticasVeiculosByMes(
           @RequestParam(name = "mes", defaultValue = "1") Integer mes) {
