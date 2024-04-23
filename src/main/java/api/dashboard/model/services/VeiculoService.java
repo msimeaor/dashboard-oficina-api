@@ -1,3 +1,10 @@
 package api.dashboard.model.services;
 
-public interface VeiculoService { }
+import api.dashboard.model.dtos.response.EstatisticasDTO;
+import org.springframework.http.ResponseEntity;
+
+public interface VeiculoService {
+
+  ResponseEntity<EstatisticasDTO> getEstatisticasVeiculos();
+
+}
