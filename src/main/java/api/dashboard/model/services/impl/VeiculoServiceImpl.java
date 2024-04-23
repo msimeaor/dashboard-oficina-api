@@ -28,4 +28,15 @@ public class VeiculoServiceImpl implements VeiculoService {
     return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
   }
 
+  @Override
+  public ResponseEntity<EstatisticasDTO> getEstatisticasVeiculosByMes(Integer valorMes) {
+    Integer totalVeiculos = acessoDadosVeiculos.getRegistrosCadastradosMesEspecifico(valorMes);
+    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = new Calculos(acessoDadosVeiculos)
+            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(valorMes);
+    EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
+            "Veículos", totalVeiculos, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
+
+    return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
+  }
+
 }

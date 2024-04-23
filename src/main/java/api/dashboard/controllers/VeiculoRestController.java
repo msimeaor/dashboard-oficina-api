@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,6 +47,13 @@ public class VeiculoRestController {
   @GetMapping("/buscas/getEstatisticasVeiculos")
   public ResponseEntity<EstatisticasDTO> getEstatisticasVeiculos() {
     return service.getEstatisticasVeiculos();
+  }
+
+  @GetMapping("/buscas/getEstatisticasVeiculosByMes")
+  public ResponseEntity<EstatisticasDTO> getEstatisticasVeiculosByMes(
+          @RequestParam(name = "mes", defaultValue = "1") Integer mes) {
+
+    return service.getEstatisticasVeiculosByMes(mes);
   }
 
 }

@@ -18,4 +18,10 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
   @Query("SELECT COUNT(*) FROM Veiculo")
   Integer countTotalVeiculosByDataCriacao();
 
+  @Query("SELECT COUNT(v) FROM Veiculo v " +
+          "WHERE v.dataCriacao >= :dataInicial " +
+          "AND v.dataCriacao <= :dataFinal")
+  Integer countVeiculoBetween2Dates(@PathParam("dataInicial") LocalDate dataInicial,
+                                    @PathParam("dataFinal") LocalDate dataFinal);
+
 }
