@@ -6,5 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface VeiculoService {
 
   ResponseEntity<EstatisticasDTO> getEstatisticasVeiculos();
+  ResponseEntity<EstatisticasDTO> getEstatisticasVeiculosByMes(Integer valorMes);
 
 }
