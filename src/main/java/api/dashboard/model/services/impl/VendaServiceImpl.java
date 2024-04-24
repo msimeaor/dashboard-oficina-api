@@ -12,16 +12,20 @@ import org.springframework.stereotype.Service;
 public class VendaServiceImpl implements VendaService {
 
   private AcessoDadosVendas acessoDadosVendas;
+  private Calculos calculos;
 
-  public VendaServiceImpl(AcessoDadosVendas acessoDadosVendas) {
+  public VendaServiceImpl(AcessoDadosVendas acessoDadosVendas,
+                          Calculos calculos) {
+
     this.acessoDadosVendas = acessoDadosVendas;
+    this.calculos = calculos;
   }
 
   @Override
   public ResponseEntity<EstatisticasDTO> getEstatisticasVendas() {
     Integer totalVendas = acessoDadosVendas.getTotalRegistrosCadastrados();
-    Double porcentagemCrescimentoVendasUltimoMes = new Calculos(acessoDadosVendas)
-            .calcularCrescimentoUltimoMesEmRelacaoAoTotal();
+    Double porcentagemCrescimentoVendasUltimoMes = calculos
+            .calcularCrescimentoUltimoMesEmRelacaoAoTotal(acessoDadosVendas);
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Vendas", totalVendas, porcentagemCrescimentoVendasUltimoMes);
 
@@ -31,8 +35,8 @@ public class VendaServiceImpl implements VendaService {
   @Override
   public ResponseEntity<EstatisticasDTO> getEstatisticasVendasByMes(Integer valorMes) {
     Integer totalVendas = acessoDadosVendas.getRegistrosCadastradosMesEspecifico(valorMes);
-    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = new Calculos(acessoDadosVendas)
-            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(valorMes);
+    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = calculos
+            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(acessoDadosVendas, valorMes);
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Vendas", totalVendas, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
 

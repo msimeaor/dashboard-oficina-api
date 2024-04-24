@@ -12,15 +12,19 @@ import org.springframework.stereotype.Service;
 public class ClienteServiceImpl implements ClienteService {
 
   private AcessoDadosCliente acessoDadosCliente;
+  private Calculos calculos;
 
-  public ClienteServiceImpl(AcessoDadosCliente acessoDadosCliente) {
+  public ClienteServiceImpl(AcessoDadosCliente acessoDadosCliente,
+                            Calculos calculos) {
+
     this.acessoDadosCliente = acessoDadosCliente;
+    this.calculos = calculos;
   }
 
   public ResponseEntity<EstatisticasDTO> getEstatisticasClientes() {
     Integer totalClientes = acessoDadosCliente.getTotalRegistrosCadastrados();
-    Double porcentagemCrescimentoClientesUltimoMes = new Calculos(acessoDadosCliente)
-            .calcularCrescimentoUltimoMesEmRelacaoAoTotal();
+    Double porcentagemCrescimentoClientesUltimoMes = calculos
+            .calcularCrescimentoUltimoMesEmRelacaoAoTotal(acessoDadosCliente);
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Clientes", totalClientes, porcentagemCrescimentoClientesUltimoMes);
 
@@ -29,8 +33,8 @@ public class ClienteServiceImpl implements ClienteService {
 
   public ResponseEntity<EstatisticasDTO> getEstatisticasClientesByMes(Integer valorMes) {
     Integer totalClientes = acessoDadosCliente.getRegistrosCadastradosMesEspecifico(valorMes);
-    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = new Calculos(acessoDadosCliente)
-            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(valorMes);
+    Double porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado = calculos
+            .calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(acessoDadosCliente, valorMes);
     EstatisticasDTO estatisticasDTO = EstatisticasDTO.newEstatisticasDTO(
             "Clientes", totalClientes, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
 

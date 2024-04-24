@@ -3,6 +3,7 @@ package api.dashboard.unittests.services;
 import api.dashboard.exceptions.ZeroCountException;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.impl.VendaServiceImpl;
+import api.dashboard.utilities.Calculos;
 import api.dashboard.utilities.searches.AcessoDadosVendas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,8 @@ class VendaServiceImplTest {
   private VendaServiceImpl service;
   @Mock
   private AcessoDadosVendas acessoDadosVendas;
+  @Mock
+  private Calculos calculos;
 
   @BeforeEach
   void setUp() {
@@ -35,7 +38,7 @@ class VendaServiceImplTest {
   @Test
   void whenGetEstatisticasVendasThenReturnSuccess() {
     when(acessoDadosVendas.getTotalRegistrosCadastrados()).thenReturn(25);
-    when(acessoDadosVendas.getRegistrosCadastradosUltimoMes()).thenReturn(7);
+    when(calculos.calcularCrescimentoUltimoMesEmRelacaoAoTotal(any())).thenReturn(28.0d);
     var content = service.getEstatisticasVendas();
 
     assertEquals(HttpStatus.OK, content.getStatusCode());
@@ -49,7 +52,8 @@ class VendaServiceImplTest {
   @Test
   void whenGetEstatisticasVendasByMesThenReturnSuccess() {
     when(acessoDadosVendas.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(8);
-    when(acessoDadosVendas.getRegistrosCadastradosUltimoMes()).thenReturn(7);
+    when(calculos.calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(any(), anyInt()))
+            .thenReturn(-12.5d);
     var content = service.getEstatisticasVendasByMes(1);
 
     assertEquals(HttpStatus.OK, content.getStatusCode());
@@ -63,7 +67,6 @@ class VendaServiceImplTest {
   @Test
   void whenGetEstatisticasVendasByMesThenThrownZeroCountException() {
     when(acessoDadosVendas.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(0);
-    when(acessoDadosVendas.getRegistrosCadastradosUltimoMes()).thenReturn(7);
 
     try {
       service.getEstatisticasVendasByMes(5);
