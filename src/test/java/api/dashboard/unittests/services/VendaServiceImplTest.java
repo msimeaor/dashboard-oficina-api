@@ -2,8 +2,10 @@ package api.dashboard.unittests.services;
 
 import api.dashboard.exceptions.ZeroCountException;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
+import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import api.dashboard.model.services.impl.VendaServiceImpl;
 import api.dashboard.utilities.Calculos;
+import api.dashboard.utilities.LogicaGetResumoCadastrosMensais;
 import api.dashboard.utilities.searches.AcessoDadosVendas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,6 +34,10 @@ class VendaServiceImplTest {
   private AcessoDadosVendas acessoDadosVendas;
   @Mock
   private Calculos calculos;
+  @Mock
+  private LogicaGetResumoCadastrosMensais logicaGetResumoCadastrosMensais;
+
+  private List<ResumoCadastrosMesDTO> resumoCadastrosMesDTOsList;
 
   @BeforeEach
   void setUp() {
@@ -81,6 +91,26 @@ class VendaServiceImplTest {
     */
   }
 
-  public void startEntities() {}
+  @Test
+  void whenGetResumoVendasMensaisThenReturnSuccess() {
+    /*
+    No teste, a lista passada só contem 1 objeto ResumoCadastrosMesDTO. Em um cenário real, a lista terá um objeto
+    representando cada mês e o total de vendas cadastradas naquele mês.
+    */
+    when(logicaGetResumoCadastrosMensais.getResumoCadastrosMensais(any()))
+            .thenReturn(resumoCadastrosMesDTOsList);
+
+    var content = service.getResumoVendasMensais();
+
+    assertEquals(HttpStatus.OK, content.getStatusCode());
+    assertEquals(ResumoCadastrosMesDTO.class, content.getBody().get(0).getClass());
+    assertEquals("Jan", content.getBody().get(0).getLabelMes());
+    assertEquals(8, content.getBody().get(0).getTotalCadastros());
+  }
+
+  public void startEntities() {
+    resumoCadastrosMesDTOsList =
+            Arrays.asList(ResumoCadastrosMesDTO.newResumoCadastrosMesDTO("Jan", 8));
+  }
 
 }
