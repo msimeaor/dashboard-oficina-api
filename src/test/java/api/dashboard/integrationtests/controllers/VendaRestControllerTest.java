@@ -4,7 +4,9 @@ import api.dashboard.configs.TestConfigs;
 import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.integrationtests.testcontainers.AbstractIntegrationTests;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
+import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
@@ -13,6 +15,9 @@ import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static io.restassured.RestAssured.*;
@@ -125,6 +130,28 @@ class VendaRestControllerTest extends AbstractIntegrationTests {
     do crescimento for feito, uma divisão por esse valor é realizada. Se ele for igual a 0, dá erro de divisão por 0.
     Para o usuário não dar de cara com o erro de calculo, a exception informando que não há dados suficientes é lançada.
     */
+  }
+
+  @Test
+  @Order(4)
+  void getResumoVendasMensais() throws JsonProcessingException {
+    var content = given().spec(specification)
+            .basePath("/api/vendas/buscas/getResumoVendasMensais")
+            .when()
+              .get()
+            .then()
+              .statusCode(200)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, new TypeReference<List<ResumoCadastrosMesDTO>>() {});
+
+    assertEquals(ArrayList.class, response.getClass());
+    assertEquals(12, response.size());
+    assertEquals(ResumoCadastrosMesDTO.class, response.get(0).getClass());
+    assertEquals("Jan", response.get(0).getLabelMes());
+    assertEquals(8, response.get(0).getTotalCadastros());
   }
 
 }
