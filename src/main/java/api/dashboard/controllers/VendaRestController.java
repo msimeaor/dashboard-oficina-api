@@ -2,6 +2,7 @@ package api.dashboard.controllers;
 
 import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
+import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import api.dashboard.model.services.impl.VendaServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/vendas")
@@ -82,6 +85,11 @@ public class VendaRestController {
           @RequestParam(name = "mes", defaultValue = "1") Integer mes) {
 
     return service.getEstatisticasVendasByMes(mes);
+  }
+
+  @GetMapping("/buscas/getResumoVendasMensais")
+  public ResponseEntity<List<ResumoCadastrosMesDTO>> getResumoVendasMensais() {
+    return service.getResumoVendasMensais();
   }
 
 }
