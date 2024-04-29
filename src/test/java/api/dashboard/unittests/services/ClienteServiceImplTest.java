@@ -4,7 +4,7 @@ import api.dashboard.exceptions.ZeroCountException;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.impl.ClienteServiceImpl;
 import api.dashboard.utilities.Calculos;
-import api.dashboard.utilities.searches.AcessoDadosCliente;
+import api.dashboard.utilities.searches.AcessoDadosClientes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,7 +25,7 @@ class ClienteServiceImplTest {
   @InjectMocks
   private ClienteServiceImpl service;
   @Mock
-  private AcessoDadosCliente acessoDadosCliente;
+  private AcessoDadosClientes acessoDadosClientes;
   @Mock
   Calculos calculos;
 
@@ -37,7 +37,7 @@ class ClienteServiceImplTest {
 
   @Test
   void whenGetEstatisticasClientesThenReturnSuccess() {
-    when(acessoDadosCliente.getTotalRegistrosCadastrados()).thenReturn(100);
+    when(acessoDadosClientes.getTotalRegistrosCadastrados()).thenReturn(100);
     when(calculos.calcularCrescimentoUltimoMesEmRelacaoAoTotal(any())).thenReturn(20.0d);
     var content = service.getEstatisticasClientes();
 
@@ -51,7 +51,7 @@ class ClienteServiceImplTest {
 
   @Test
   void whenGetEstatisticasClientesByMesThenReturnSuccess() {
-    when(acessoDadosCliente.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(15);
+    when(acessoDadosClientes.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(15);
     when(calculos.calcularCrescimentoUltimoMesEmRelacaoAMesSelecionado(any(), anyInt()))
             .thenReturn(33.333333333333336d);
     var content = service.getEstatisticasClientesByMes(1);
@@ -66,7 +66,7 @@ class ClienteServiceImplTest {
 
   @Test
   void whenGetEstatisticasClientesByMesThenReturnZeroCountException() {
-    when(acessoDadosCliente.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(0);
+    when(acessoDadosClientes.getRegistrosCadastradosMesEspecifico(anyInt())).thenReturn(0);
 
     try {
       service.getEstatisticasClientesByMes(1);

@@ -8,22 +8,25 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public class AcessoDadosCliente implements AcessoDados {
+public class AcessoDadosClientes implements AcessoDados {
 
   private ClienteRepository repository;
 
-  public AcessoDadosCliente(ClienteRepository repository) {
+  public AcessoDadosClientes(ClienteRepository repository) {
     this.repository = repository;
   }
 
+  @Override
   public Integer getRegistrosCadastradosUltimoMes() {
     return repository.countClienteLast30DaysByDataCriacao(GeracaoDatas.getUmMesAtras());
   }
 
+  @Override
   public Integer getTotalRegistrosCadastrados() {
     return repository.countTotalClientesByDataCriacao();
   }
 
+  @Override
   public Integer getRegistrosCadastradosMesEspecifico(Integer valorMes) {
     LocalDate primeiroDiaDoMes = GeracaoDatas.getDataPersonalizada(GeracaoDatas.getAnoAtual(), valorMes, 01);
     LocalDate ultimoDiaDoMes = GeracaoDatas.getUltimoDiaMes(primeiroDiaDoMes);
