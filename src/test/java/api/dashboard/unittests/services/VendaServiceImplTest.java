@@ -5,7 +5,7 @@ import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import api.dashboard.model.services.impl.VendaServiceImpl;
 import api.dashboard.utilities.Calculos;
-import api.dashboard.utilities.LogicaGetResumoCadastrosMensais;
+import api.dashboard.utilities.businessLogicEndpoints.vendas.LogicaGetResumoCadastrosMensais;
 import api.dashboard.utilities.searches.AcessoDadosVendas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
