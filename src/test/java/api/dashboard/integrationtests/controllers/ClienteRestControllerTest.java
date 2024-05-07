@@ -1,8 +1,12 @@
 package api.dashboard.integrationtests.controllers;
 
 import api.dashboard.configs.TestConfigs;
+import api.dashboard.enums.Genero;
 import api.dashboard.exceptions.ExceptionResponse;
 import api.dashboard.integrationtests.testcontainers.AbstractIntegrationTests;
+import api.dashboard.model.dtos.request.ClienteRequestDTO;
+import api.dashboard.model.dtos.request.TelefoneRequestDTO;
+import api.dashboard.model.dtos.response.ClienteResponseDTO;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,6 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,11 +30,14 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
 
   private static RequestSpecification specification;
   private static ObjectMapper mapper;
+  private static ClienteRequestDTO clienteRequestDTO;
+  private static TelefoneRequestDTO telefoneRequestDTO;
 
   @BeforeEach
   void setUp() {
     mapper = new ObjectMapper();
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.findAndRegisterModules();
 
     startEntities();
   }
@@ -129,6 +139,120 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
     */
   }
 
-  private static void startEntities() {}
+  @Test
+  @Order(4)
+  void cadastrarCliente() throws JsonProcessingException {
+    var content = given().spec(specification)
+            .basePath("/api/clientes/persistencias/cadastrarCliente")
+            .body(clienteRequestDTO)
+            .when()
+              .post()
+            .then()
+              .statusCode(201)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, ClienteResponseDTO.class);
+
+    assertEquals(ClienteResponseDTO.class, response.getClass());
+    assertEquals(51L, response.getId());
+    assertEquals("Primeiro Nome Teste", response.getPrimeiroNome());
+    assertEquals("Sobrenome Teste", response.getSobrenome());
+    assertEquals("00000000000", response.getCpf());
+    assertEquals(Genero.MASCULINO, response.getGenero());
+    assertEquals("emailTeste@email.com", response.getEmail());
+    assertEquals(LocalDate.of(2000, 01, 01), response.getDataNascimento());
+    //TODO Inserir validação do link HATEOAS de telefone
+  }
+
+  @Test
+  @Order(5)
+  void cadastrarClienteComCPFRepetido() throws JsonProcessingException {
+    var content = given().spec(specification)
+            .basePath("/api/clientes/persistencias/cadastrarCliente")
+            .body(clienteRequestDTO)
+            .when()
+              .post()
+            .then()
+              .statusCode(409)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, ExceptionResponse.class);
+
+    assertEquals(ExceptionResponse.class, response.getClass());
+    assertEquals(HttpStatus.CONFLICT.value(), response.getCodigoHttpErro());
+    assertEquals("Verificamos que já existem clientes cadastrados com este CPF!", response.getMensagemErro());
+    assertEquals("uri=/api/clientes/persistencias/cadastrarCliente", response.getDetalhesErro());
+  }
+
+  @Test
+  @Order(6)
+  void cadastrarClienteComTelefoneRepetido() throws JsonProcessingException {
+    clienteRequestDTO.setCpf("00000000001");
+
+    var content = given().spec(specification)
+            .basePath("/api/clientes/persistencias/cadastrarCliente")
+            .body(clienteRequestDTO)
+            .when()
+              .post()
+            .then()
+              .statusCode(409)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, ExceptionResponse.class);
+
+    assertEquals(ExceptionResponse.class, response.getClass());
+    assertEquals(HttpStatus.CONFLICT.value(), response.getCodigoHttpErro());
+    assertEquals("Verificamos que já existem clientes cadastrados com este número de telefone!",
+            response.getMensagemErro());
+    assertEquals("uri=/api/clientes/persistencias/cadastrarCliente", response.getDetalhesErro());
+  }
+
+  @Test
+  @Order(7)
+  void cadastrarClienteComEmailRepetido() throws JsonProcessingException {
+    clienteRequestDTO.setCpf("0000000001");
+    telefoneRequestDTO.setNumero("000000001");
+
+    var content = given().spec(specification)
+            .basePath("/api/clientes/persistencias/cadastrarCliente")
+            .body(clienteRequestDTO)
+            .when()
+              .post()
+            .then()
+              .statusCode(409)
+            .extract()
+              .body()
+                .asString();
+
+    var response = mapper.readValue(content, ExceptionResponse.class);
+
+    assertEquals(ExceptionResponse.class, response.getClass());
+    assertEquals(HttpStatus.CONFLICT.value(), response.getCodigoHttpErro());
+    assertEquals("Verificamos que já existem clientes cadastrados com este email!", response.getMensagemErro());
+    assertEquals("uri=/api/clientes/persistencias/cadastrarCliente", response.getDetalhesErro());
+  }
+
+  private static void startEntities() {
+    telefoneRequestDTO = TelefoneRequestDTO.builder()
+            .ddd("000")
+            .numero("000000000")
+            .build();
+
+    clienteRequestDTO = ClienteRequestDTO.builder()
+            .primeiroNome("Primeiro Nome Teste")
+            .sobrenome("Sobrenome Teste")
+            .cpf("00000000000")
+            .email("emailTeste@email.com")
+            .dataNascimento(LocalDate.of(2000, 01, 01))
+            .genero(Genero.MASCULINO)
+            .telefoneRequestDTO(telefoneRequestDTO)
+            .build();
+  }
 
 }
