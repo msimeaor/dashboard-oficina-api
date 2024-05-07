@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
@@ -23,4 +24,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
           "AND c.dataCriacao <= :dataFinal")
   Integer countClienteBetween2Dates(@PathParam("dataInicio") LocalDate dataInicial,
                                     @PathParam("dataFinal") LocalDate dataFinal);
+
+  Optional<Cliente> findByCpf(String cpf);
+  Optional<Cliente> findByEmail(String email);
+
 }

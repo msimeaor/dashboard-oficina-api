@@ -1,6 +1,8 @@
 package api.dashboard.controllers;
 
 import api.dashboard.exceptions.ExceptionResponse;
+import api.dashboard.model.dtos.request.ClienteRequestDTO;
+import api.dashboard.model.dtos.response.ClienteResponseDTO;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.services.impl.ClienteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,10 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/clientes")
@@ -84,6 +83,11 @@ public class ClienteRestController {
   ) {
 
     return service.getEstatisticasClientesByMes(mes);
+  }
+
+  @PostMapping("/persistencias/cadastrarCliente")
+  public ResponseEntity<ClienteResponseDTO> cadastrarCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
+    return service.cadastrarCliente(clienteRequestDTO);
   }
 
 }

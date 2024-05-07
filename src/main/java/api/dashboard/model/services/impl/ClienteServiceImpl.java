@@ -1,8 +1,13 @@
 package api.dashboard.model.services.impl;
 
+import api.dashboard.model.dtos.request.ClienteRequestDTO;
+import api.dashboard.model.dtos.response.ClienteResponseDTO;
 import api.dashboard.model.dtos.response.EstatisticasDTO;
+import api.dashboard.model.entities.Cliente;
+import api.dashboard.model.entities.Telefone;
 import api.dashboard.model.services.ClienteService;
 import api.dashboard.utilities.Calculos;
+import api.dashboard.utilities.businessLogicEndpoints.clientes.LogicaCadastrarCliente;
 import api.dashboard.utilities.searches.AcessoDadosClientes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +18,15 @@ public class ClienteServiceImpl implements ClienteService {
 
   private AcessoDadosClientes acessoDadosClientes;
   private Calculos calculos;
+  private LogicaCadastrarCliente logicaCadastrarCliente;
 
   public ClienteServiceImpl(AcessoDadosClientes acessoDadosClientes,
-                            Calculos calculos) {
+                            Calculos calculos,
+                            LogicaCadastrarCliente logicaCadastrarCliente) {
 
     this.acessoDadosClientes = acessoDadosClientes;
     this.calculos = calculos;
+    this.logicaCadastrarCliente = logicaCadastrarCliente;
   }
 
   @Override
@@ -41,6 +49,17 @@ public class ClienteServiceImpl implements ClienteService {
             "Clientes", totalClientes, porcentagemCrescimentoUltimoMesEmRelacaoAoMesSelecionado);
 
     return new ResponseEntity<>(estatisticasDTO, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ClienteResponseDTO> cadastrarCliente(ClienteRequestDTO clienteRequestDTO) {
+    logicaCadastrarCliente.validarClienteRequestDTO(clienteRequestDTO);
+    Telefone telefone = logicaCadastrarCliente.criarESalvarTelefoneDoCliente(clienteRequestDTO.getTelefoneRequestDTO());
+    Cliente cliente = logicaCadastrarCliente.criarESalvarCliente(clienteRequestDTO, telefone);
+    logicaCadastrarCliente.vincularTelefoneAoCliente(telefone, cliente);
+    ClienteResponseDTO clienteResponseDTO = logicaCadastrarCliente.criarLinksHateoasDeCliente(cliente);
+
+    return new ResponseEntity<>(clienteResponseDTO, HttpStatus.CREATED);
   }
 
 }
