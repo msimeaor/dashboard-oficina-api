@@ -85,6 +85,32 @@ public class ClienteRestController {
     return service.getEstatisticasClientesByMes(mes);
   }
 
+  @Operation(summary = "Cadastrar novo cliente",
+    description = "Cadastrar novo cliente e numero de telefone do cliente no banco de dados.",
+    tags = {"Cadastro"},
+    responses = {
+      @ApiResponse(description = "Sucesso", responseCode = "201",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = ClienteResponseDTO.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "CPF, número de telefone ou email já existente no banco de dados", responseCode = "409",
+        content = {
+          @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            schema = @Schema(implementation = ExceptionResponse.class)
+          )
+        }
+      ),
+      @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+      @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+      @ApiResponse(description = "Forbiden", responseCode = "403", content = @Content),
+      @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+    }
+  )
   @PostMapping("/persistencias/cadastrarCliente")
   public ResponseEntity<ClienteResponseDTO> cadastrarCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
     return service.cadastrarCliente(clienteRequestDTO);
