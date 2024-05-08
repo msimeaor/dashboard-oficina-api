@@ -2,6 +2,7 @@ package api.dashboard.exceptions.controllers;
 
 import api.dashboard.exceptions.ConflictException;
 import api.dashboard.exceptions.ExceptionResponse;
+import api.dashboard.exceptions.NotFoundException;
 import api.dashboard.exceptions.ZeroCountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ConflictException.class)
   public ResponseEntity<ExceptionResponse> conflictException(Exception ex, WebRequest request) {
     return criarERetornarExceptionResponse(ex, request, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ExceptionResponse> notFoundException(Exception ex, WebRequest request) {
+    return criarERetornarExceptionResponse(ex, request, HttpStatus.NOT_FOUND);
   }
 
   public ResponseEntity<ExceptionResponse> criarERetornarExceptionResponse(Exception ex,
