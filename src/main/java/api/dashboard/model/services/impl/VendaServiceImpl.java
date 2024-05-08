@@ -4,7 +4,7 @@ import api.dashboard.model.dtos.response.EstatisticasDTO;
 import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import api.dashboard.model.services.VendaService;
 import api.dashboard.utilities.Calculos;
-import api.dashboard.utilities.LogicaGetResumoCadastrosMensais;
+import api.dashboard.utilities.businessLogicEndpoints.vendas.LogicaGetResumoCadastrosMensais;
 import api.dashboard.utilities.searches.AcessoDadosVendas;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package api.dashboard.utilities;
+package api.dashboard.utilities.businessLogicEndpoints.vendas;
 
 import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
 import api.dashboard.utilities.interfaces.LogicaGetResumoCadastrosMensaisInterface;
