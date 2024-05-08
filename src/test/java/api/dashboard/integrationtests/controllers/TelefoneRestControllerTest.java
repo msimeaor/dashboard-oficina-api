@@ -53,6 +53,7 @@ class TelefoneRestControllerTest extends AbstractIntegrationTests {
     var response = mapper.readValue(content, TelefoneResponseDTO.class);
 
     assertEquals(TelefoneResponseDTO.class, response.getClass());
+    assertEquals(1L, response.getId());
     assertEquals("918", response.getDdd());
     assertEquals("496104144", response.getNumero());
     // TODO Criar validação do link HATEOAS de cliente
@@ -63,7 +64,7 @@ class TelefoneRestControllerTest extends AbstractIntegrationTests {
   void getTelefoneByIdWithInvalidId() throws JsonProcessingException {
     var content = given().spec(specification)
             .basePath("/api/telefones/buscas/getTelefoneById")
-            .pathParam("id", 51)
+            .pathParam("id", 100)
             .when()
               .get("{id}")
             .then()
@@ -77,7 +78,7 @@ class TelefoneRestControllerTest extends AbstractIntegrationTests {
     assertEquals(ExceptionResponse.class, response.getClass());
     assertEquals(HttpStatus.NOT_FOUND.value(), response.getCodigoHttpErro());
     assertEquals("Telefone não encontrado!", response.getMensagemErro());
-    assertEquals("uri=/api/telefones/buscas/getTelefoneById/51", response.getDetalhesErro());
+    assertEquals("uri=/api/telefones/buscas/getTelefoneById/100", response.getDetalhesErro());
   }
 
 }

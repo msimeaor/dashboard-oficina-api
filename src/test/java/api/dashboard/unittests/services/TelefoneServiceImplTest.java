@@ -44,6 +44,7 @@ class TelefoneServiceImplTest {
 
     assertEquals(HttpStatus.OK, content.getStatusCode());
     assertEquals(TelefoneResponseDTO.class, content.getBody().getClass());
+    assertEquals(1L, content.getBody().getId());
     assertEquals("000", content.getBody().getDdd());
     assertEquals("000000000", content.getBody().getNumero());
   }
