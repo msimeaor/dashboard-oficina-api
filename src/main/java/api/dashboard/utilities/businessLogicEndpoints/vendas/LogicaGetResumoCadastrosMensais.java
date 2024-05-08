@@ -1,7 +1,6 @@
 package api.dashboard.utilities.businessLogicEndpoints.vendas;
 
 import api.dashboard.model.dtos.response.ResumoCadastrosMesDTO;
-import api.dashboard.utilities.interfaces.LogicaGetResumoCadastrosMensaisInterface;
 import api.dashboard.utilities.interfaces.searches.AcessoDados;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +10,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Component
-public class LogicaGetResumoCadastrosMensais implements LogicaGetResumoCadastrosMensaisInterface {
+public class LogicaGetResumoCadastrosMensais {
 
   private List<String> mesesDoAno = new ArrayList<>(Arrays
           .asList("Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
                   "Jul", "Ago", "Set", "Out", "Nov", "Dez"));
   private List<ResumoCadastrosMesDTO> resumoCadastrosMesDTOsList = new ArrayList<>();
 
-  @Override
   public List<ResumoCadastrosMesDTO> getResumoCadastrosMensais(AcessoDados acessoDados) {
     IntStream.range(1, mesesDoAno.size() + 1).forEach(index -> {
       String mes = coletarMes(index);
