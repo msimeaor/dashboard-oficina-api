@@ -1,5 +1,6 @@
 package api.dashboard.utilities.businessLogicEndpoints.clientes;
 
+import api.dashboard.controllers.TelefoneRestController;
 import api.dashboard.dozermapper.DozzerMapper;
 import api.dashboard.model.dtos.request.ClienteRequestDTO;
 import api.dashboard.model.dtos.request.TelefoneRequestDTO;
@@ -12,6 +13,7 @@ import api.dashboard.validations.ValidacaoCliente;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
 public class LogicaCadastrarCliente {
@@ -51,7 +53,8 @@ public class LogicaCadastrarCliente {
 
   public ClienteResponseDTO criarLinksHateoasDeCliente(Cliente cliente) {
     ClienteResponseDTO clienteResponseDTO = DozzerMapper.parseObject(cliente, ClienteResponseDTO.class);
-    // TODO Criar links HATEOAS de telefone
+    clienteResponseDTO.add(linkTo(methodOn(TelefoneRestController.class)
+            .getTelefoneById(cliente.getTelefone().getId())).withRel("Telefone"));
     return clienteResponseDTO;
   }
 

@@ -22,6 +22,7 @@ import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -162,7 +163,8 @@ class ClienteRestControllerTest extends AbstractIntegrationTests {
     assertEquals(Genero.MASCULINO, response.getGenero());
     assertEquals("emailTeste@email.com", response.getEmail());
     assertEquals(LocalDate.of(2000, 01, 01), response.getDataNascimento());
-    //TODO Inserir validação do link HATEOAS de telefone
+    assertTrue(content.contains(
+            "\"_links\":{\"Telefone\":{\"href\":\"http://localhost:8888/api/telefones/buscas/getTelefoneById/51\"}}"));
   }
 
   @Test
