@@ -9,11 +9,11 @@ import api.dashboard.model.entities.Cliente;
 import api.dashboard.model.entities.Telefone;
 import api.dashboard.model.repositories.ClienteRepository;
 import api.dashboard.model.repositories.TelefoneRepository;
+import api.dashboard.utilities.HateoasLinkBuilder;
 import api.dashboard.validations.ValidacaoCliente;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
 public class LogicaCadastrarCliente {
@@ -21,14 +21,17 @@ public class LogicaCadastrarCliente {
   private ValidacaoCliente validacaoCliente;
   private ClienteRepository clienteRepository;
   private TelefoneRepository telefoneRepository;
+  private HateoasLinkBuilder hateoasLinkBuilder;
 
   public LogicaCadastrarCliente(ValidacaoCliente validacaoCliente,
                                 ClienteRepository clienteRepository,
-                                TelefoneRepository telefoneRepository) {
+                                TelefoneRepository telefoneRepository,
+                                HateoasLinkBuilder hateoasLinkBuilder) {
 
     this.validacaoCliente = validacaoCliente;
     this.clienteRepository = clienteRepository;
     this.telefoneRepository = telefoneRepository;
+    this.hateoasLinkBuilder = hateoasLinkBuilder;
   }
 
   public void validarClienteRequestDTO(ClienteRequestDTO clienteRequestDTO) {
@@ -53,8 +56,11 @@ public class LogicaCadastrarCliente {
 
   public ClienteResponseDTO criarLinksHateoasDeCliente(Cliente cliente) {
     ClienteResponseDTO clienteResponseDTO = DozzerMapper.parseObject(cliente, ClienteResponseDTO.class);
-    clienteResponseDTO.add(linkTo(methodOn(TelefoneRestController.class)
-            .getTelefoneById(cliente.getTelefone().getId())).withRel("Telefone"));
+    clienteResponseDTO.add(hateoasLinkBuilder.gerarLinkFiltrando(
+            TelefoneRestController.class,
+            "getTelefoneById",
+            new Object[]{cliente.getTelefone().getId()},
+            "Telefone"));
     return clienteResponseDTO;
   }
 
